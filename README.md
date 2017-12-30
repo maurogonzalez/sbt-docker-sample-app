@@ -1,5 +1,7 @@
 ## SBT Docker Sample App
 
+Scala sample app that integrates docker through sbt docker plugin. This can help to quickly build microservices with CI/CD.
+
 ### Requirements
 
 * git
