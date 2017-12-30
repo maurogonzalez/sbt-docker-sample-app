@@ -5,7 +5,7 @@
 * git
 * JDK 8
 * sbt >= 0.13
-* docker-compose >= 1.11 (Only for local integration test)
+* docker-compose >= 1.11
 
 ### Usage
 
@@ -20,7 +20,7 @@ To build the application's Dockerfile use:
 ```
 $ sbt docker:stage
 ```
-And before the `docker-compose up` above command run:
+And before the `docker-compose up` command run:
 ```
 $ docker-compose build
 ```
@@ -30,7 +30,6 @@ $ docker-compose up
 ```
 * Run the application in _watch mode_ ( `~re-start` watches changes in code and compile them before restarting the service):
 ```
-#!shell
   $ sbt 
   > ~re-start
 ```
