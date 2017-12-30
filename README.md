@@ -72,4 +72,4 @@ $ curl -X POST \
 ## Author
 
 If you have any questions regarding this project contact:  
-Mauro González <jmajma@gmail.com>
+Mauro González <jmajma8@gmail.com>
