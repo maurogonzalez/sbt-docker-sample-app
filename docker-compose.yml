@@ -1,0 +1,11 @@
+version: '3'
+services:
+  sbt-sample-app:
+   build:
+     context: ./target/docker/stage
+   command:
+     - -v
+     - -d
+     - -Dconfig.file=/opt/docker/application.conf
+   ports:
+     - "8080:8080"
