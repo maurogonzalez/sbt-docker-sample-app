@@ -25,7 +25,7 @@ showName := {
 }
 
 
-lazy val showVersion = taskKey[Unit]("Show versio")
+lazy val showVersion = taskKey[Unit]("Show version")
 showVersion := {
   println(version.value)
 }
@@ -62,11 +62,6 @@ libraryDependencies ++= {
 
     "ch.qos.logback"               %  "logback-classic"          % "1.1.6",
     "net.logstash.logback"         %  "logstash-logback-encoder" % "4.7",
-    "de.siegmar"                   % "logback-gelf"              % "1.0.4",
-
-
-    "com.fasterxml.jackson.core"   %  "jackson-databind"         % "2.6.5",
-    "com.fasterxml.jackson.module" %% "jackson-module-scala"     % "2.6.7.1",
 
     "org.slf4j"                    %  "slf4j-api"                % slf4jV,
 

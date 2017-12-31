@@ -1,6 +1,6 @@
 ## SBT Docker Sample App
 
-Scala sample app that integrates docker through sbt docker plugin. This can help to quickly build microservices with CI/CD.
+Scala sample app that integrates docker through SBT Docker Plugin. This can help to quickly build microservices with CI/CD.
 
 ### Requirements
 
@@ -18,11 +18,11 @@ $ sbt test
 
 **Start the application**
 
-To build the application's Dockerfile use:
+Build the application's Dockerfile:
 ```
 $ sbt docker:stage
 ```
-And before the `docker-compose up` command run:
+Build the docker image:
 ```
 $ docker-compose build
 ```
@@ -30,24 +30,21 @@ Start container with your app:
 ```
 $ docker-compose up
 ```
-* Run the application in _watch mode_ ( `~re-start` watches changes in code and compile them before restarting the service):
+Run the application in _watch mode_ (`~re-start` watches changes in code and compile them before restarting the service):
 ```
   $ sbt 
   > ~re-start
 ```
-
-* Simply run the application:
+Simply run the application:
 ```
   $ sbt run
 ```
-
 With the service up, you can start sending HTTP requests:
 
 **Status service**
 ```
 $ curl http://127.0.0.1:8080/sample-app/status
 ```
-
 
 **Name service**
 ```
@@ -57,6 +54,11 @@ $ curl -X POST \
     -d '{
   	"name": "Mauro"
   }'
+```
+
+**OpenAPI spec**
+```
+$ curl http://127.0.0.1:8080/sample-app/api-docs/swagger.yaml
 ```
 
 ## Notes

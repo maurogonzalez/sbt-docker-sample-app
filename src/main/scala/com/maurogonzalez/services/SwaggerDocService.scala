@@ -1,16 +1,15 @@
-package com.maurogonzalez
+package com.maurogonzalez.services
 
-import com.github.swagger.akka._
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
-
-import scala.reflect.runtime.{universe => ru}
-import com.maurogonzalez.services.NameService
-import com.maurogonzalez.services.StatusService
+import com.github.swagger.akka._
 import com.github.swagger.akka.model.Info
+import com.maurogonzalez.RequestLogging
 import io.swagger.models.Scheme
 
-class SwaggerDocService(address: String, port: Int, system: ActorSystem, _basePath: String, _host: String) extends SwaggerHttpService with HasActorSystem with RequestLogging {
+import scala.reflect.runtime.{universe => ru}
+
+case class SwaggerDocService(address: String, port: Int, system: ActorSystem, _basePath: String, _host: String) extends SwaggerHttpService with HasActorSystem with RequestLogging {
   override implicit val actorSystem: ActorSystem = system
   override implicit val materializer: ActorMaterializer = ActorMaterializer()
   override val apiTypes = Seq(ru.typeOf[NameService], ru.typeOf[StatusService])

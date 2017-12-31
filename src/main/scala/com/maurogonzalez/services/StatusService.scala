@@ -16,7 +16,7 @@ import scala.concurrent.duration._
 @Path("/status")
 @Api(value = "/status", produces = "application/json")
 trait StatusService extends BaseService with RequestLogging {
-  @ApiOperation(value = "Return OK status", notes = "Estatus de la API", httpMethod = "GET",
+  @ApiOperation(value = "Return OK status", notes = "Uptime in millisencods", httpMethod = "GET",
     nickname = "status", response = classOf[Status], produces = "application/json")
   override protected def routes(): Route =
     path("status") {
