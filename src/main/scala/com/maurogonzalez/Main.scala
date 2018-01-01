@@ -7,21 +7,25 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.PathMatchers.separateOnSlashes
 import akka.http.scaladsl.server.Route
 import akka.stream.{ActorMaterializer, Materializer}
-import com.maurogonzalez.services.SwaggerDocService
+import ch.megard.akka.http.cors.CorsDirectives._
+import com.maurogonzalez.services.{NameService, StatusService, SwaggerDocService}
 import com.typesafe.config.{Config, ConfigFactory}
 
 import scala.concurrent.Await
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.util.{Failure, Success, Try}
 
-object Main extends App with HttpService {
+object Main extends App with HttpService with RequestLogging {
 
-  override def executor = system.dispatcher
-  override protected def log = Logging(system, service)
+  override implicit def executor = system.dispatcher
+  protected def log = Logging(system, service)
   override implicit val system: ActorSystem = ActorSystem()
   override implicit val materializer: Materializer = ActorMaterializer()
 
+  override protected def configureRoutes(system: ActorSystem): Route = {
+    implicit val s = system
+    cors()(StatusService().routes() ~ NameService().routes())
+  }
   override def akkaConfig: Config = ConfigFactory.load()
 
   def bind(route: Route, interface: String, basePath: String): Int ⇒ Boolean =

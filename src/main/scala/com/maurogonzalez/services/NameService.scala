@@ -2,34 +2,35 @@ package com.maurogonzalez.services
 
 import javax.ws.rs.Path
 
+import akka.actor.ActorSystem
+import akka.event.Logging
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server._
 import com.maurogonzalez.RequestLogging
-import org.slf4j.LoggerFactory
 import com.maurogonzalez.models.Name
-import io.circe.Json
 import io.circe.generic.auto._
 import io.swagger.annotations._
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
 @Path("/name")
 @Api(value = "/name", produces = "application/json", consumes = "application/json" )
-trait NameService extends BaseService with RequestLogging {
-  private val logger = LoggerFactory.getLogger(this.getClass)
+case class NameService()(implicit system: ActorSystem) extends BaseService with RequestLogging {
+  override implicit def executor: ExecutionContext = system.dispatcher
+  override protected def log = Logging(system, "name-service")
 
-  def nameProcessor(name: Name): Future[Name] = Future {
-    Name(s"Sample-${name.name}")
+  def nameProcessor(n: Name): Future[Name] = Future {
+    Name(s"Sample-${n.name}")
   }
 
-  @ApiOperation(value = "Return well-formed json", notes = "", httpMethod = "POST",
+  @ApiOperation(value = "Return your Sample name", notes = "Sample name", httpMethod = "POST",
     nickname = "name", produces = "application/json", consumes = "application/json", response = classOf[Name])
   @ApiImplicitParams(Array(
     new ApiImplicitParam(name = "name", paramType = "body", dataTypeClass = classOf[Name])
   ))
-  override protected def routes(): Route =
+  override def routes(): Route =
     path("name") {
         logRequestResult(loggingMagnet) {
           post {
