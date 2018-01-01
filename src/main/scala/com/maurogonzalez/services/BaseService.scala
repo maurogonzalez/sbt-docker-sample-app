@@ -7,7 +7,7 @@ import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
 import scala.concurrent.ExecutionContext
 
 trait BaseService extends FailFastCirceSupport {
-  protected implicit def log: LoggingAdapter
-  protected implicit def executor: ExecutionContext
-  protected def routes(): Route
+  implicit def executor: ExecutionContext
+  def log: LoggingAdapter
+  def routes(): Route
 }

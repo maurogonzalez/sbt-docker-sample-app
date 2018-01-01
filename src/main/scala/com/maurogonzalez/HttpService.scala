@@ -8,9 +8,9 @@ import com.typesafe.config.Config
 import scala.concurrent.ExecutionContextExecutor
 
 trait HttpService extends RouteConcatenation {
-  implicit val system: ActorSystem
+  implicit val aS: ActorSystem
   implicit def executor: ExecutionContextExecutor
-  implicit val materializer: Materializer
+  implicit val aM: Materializer
 
   def akkaConfig: Config
 

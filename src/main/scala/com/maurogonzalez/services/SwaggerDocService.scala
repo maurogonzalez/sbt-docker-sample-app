@@ -9,12 +9,12 @@ import io.swagger.models.Scheme
 
 import scala.reflect.runtime.{universe => ru}
 
-case class SwaggerDocService(address: String, port: Int, system: ActorSystem, _basePath: String, _host: String) extends SwaggerHttpService with HasActorSystem with RequestLogging {
-  override implicit val actorSystem: ActorSystem = system
-  override implicit val materializer: ActorMaterializer = ActorMaterializer()
+case class SwaggerDocService(aM: ActorMaterializer, b: String, h: String)(implicit aS: ActorSystem) extends SwaggerHttpService with HasActorSystem with RequestLogging {
+  override implicit val actorSystem: ActorSystem = aS
+  override implicit val materializer: ActorMaterializer = aM
   override val apiTypes = Seq(ru.typeOf[NameService], ru.typeOf[StatusService])
-  override val basePath = _basePath
-  override val host = _host
+  override val basePath = b
+  override val host = h
   override val apiDocsPath = "api-docs"
   override val info = Info(description = "Sample App", version = "v1.0.0",
     title = "Sample App", termsOfService = "")

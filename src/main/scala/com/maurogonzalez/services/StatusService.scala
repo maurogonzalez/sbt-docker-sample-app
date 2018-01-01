@@ -19,12 +19,12 @@ import scala.concurrent.duration._
 @Path("/status")
 @Api(value = "/status", produces = "application/json")
 case class StatusService()(implicit system: ActorSystem) extends BaseService with RequestLogging {
-  override implicit def executor: ExecutionContext = system.dispatcher
-  override protected def log = Logging(system, service)
+  implicit def executor: ExecutionContext = system.dispatcher
+  def log = Logging(system, service)
 
   @ApiOperation(value = "Return OK status", notes = "Uptime in millisencods", httpMethod = "GET",
     nickname = "status", response = classOf[Status], produces = "application/json")
-  override def routes(): Route =
+  def routes(): Route =
     path("status") {
       logRequestResult(loggingMagnet) {
         get {

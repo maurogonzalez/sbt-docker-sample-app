@@ -18,8 +18,8 @@ import scala.util.{Failure, Success}
 @Path("/name")
 @Api(value = "/name", produces = "application/json", consumes = "application/json" )
 case class NameService()(implicit system: ActorSystem) extends BaseService with RequestLogging {
-  override implicit def executor: ExecutionContext = system.dispatcher
-  override protected def log = Logging(system, "name-service")
+  implicit def executor: ExecutionContext = system.dispatcher
+  def log = Logging(system, "name-service")
 
   def nameProcessor(n: Name): Future[Name] = Future {
     Name(s"Sample-${n.name}")
@@ -30,7 +30,7 @@ case class NameService()(implicit system: ActorSystem) extends BaseService with 
   @ApiImplicitParams(Array(
     new ApiImplicitParam(name = "name", paramType = "body", dataTypeClass = classOf[Name])
   ))
-  override def routes(): Route =
+  def routes(): Route =
     path("name") {
         logRequestResult(loggingMagnet) {
           post {

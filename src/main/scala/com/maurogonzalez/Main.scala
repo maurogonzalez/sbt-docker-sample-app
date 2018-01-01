@@ -17,22 +17,20 @@ import scala.util.{Failure, Success, Try}
 
 object Main extends App with HttpService with RequestLogging {
 
-  override implicit def executor = system.dispatcher
-  protected def log = Logging(system, service)
-  override implicit val system: ActorSystem = ActorSystem()
-  override implicit val materializer: Materializer = ActorMaterializer()
-
-  override protected def configureRoutes(system: ActorSystem): Route = {
-    implicit val s = system
-    cors()(StatusService().routes() ~ NameService().routes())
-  }
+  implicit def executor = aS.dispatcher
+  protected def log = Logging(aS, service)
+  implicit val aS: ActorSystem = ActorSystem()
+  implicit val aM: ActorMaterializer = ActorMaterializer()
   override def akkaConfig: Config = ConfigFactory.load()
+
+  protected def configureRoutes(system: ActorSystem): Route = {
+    cors()(StatusService().routes() ~ NameService().routes() ~
+      SwaggerDocService(aM, akkaConfig.getString("akka.http.path-prefix"), akkaConfig.getString("swagger.host")).routes)
+  }
 
   def bind(route: Route, interface: String, basePath: String): Int ⇒ Boolean =
     (port: Int) ⇒ {
-      val mainRouter = pathPrefix(separateOnSlashes(basePath)) {
-        route ~ SwaggerDocService("localhost", port, system, basePath, akkaConfig.getString("swagger.host")).routes
-      }
+      val mainRouter = pathPrefix(separateOnSlashes(basePath)) { route }
 
       val eventualBinding = Http().bindAndHandle(mainRouter, interface, port)
       Try(Await.result(eventualBinding, Duration(60, "seconds"))) match {
@@ -53,6 +51,6 @@ object Main extends App with HttpService with RequestLogging {
   val portTo: Int = akkaConfig.getInt("akka.http.ports.to")
 
   scala.util.Random.shuffle(scala.Range.inclusive(portFrom, portTo)) takeWhile
-    bind(configureRoutes(system), akkaConfig.getString("akka.http.interface"), akkaConfig.getString("akka.http.path-prefix"))
+    bind(configureRoutes(aS), akkaConfig.getString("akka.http.interface"), akkaConfig.getString("akka.http.path-prefix"))
 
 }

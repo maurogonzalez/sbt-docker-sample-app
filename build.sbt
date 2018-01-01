@@ -58,8 +58,6 @@ libraryDependencies ++= {
     "io.circe"                     %% "circe-generic"            % circeV,
     "io.circe"                     %% "circe-parser"             % circeV,
 
-    "org.apache.curator"           %  "curator-x-discovery"      % "2.12.0",
-
     "ch.qos.logback"               %  "logback-classic"          % "1.1.6",
     "net.logstash.logback"         %  "logstash-logback-encoder" % "4.7",
 
