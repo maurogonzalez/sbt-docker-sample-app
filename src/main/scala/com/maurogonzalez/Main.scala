@@ -6,7 +6,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.PathMatchers.separateOnSlashes
 import akka.http.scaladsl.server.Route
-import akka.stream.{ActorMaterializer, Materializer}
+import akka.stream.ActorMaterializer
 import ch.megard.akka.http.cors.CorsDirectives._
 import com.maurogonzalez.services.{NameService, StatusService, SwaggerDocService}
 import com.typesafe.config.{Config, ConfigFactory}
